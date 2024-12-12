@@ -11,24 +11,24 @@ const MenuCategories = () => {
       >
         Style
       </Link>
-      <Link className={`${styles.categoryItem} ${styles.fashion}`} href="/blog">
+      <Link className={`${styles.categoryItem} ${styles.fashion}`} href="/blog?cat=fashion">
         Fashion
       </Link>
-      <Link className={`${styles.categoryItem} ${styles.food}`} href="/blog">
+      <Link className={`${styles.categoryItem} ${styles.food}`} href="/blog?cat=food">
         Food
       </Link>
-      <Link className={`${styles.categoryItem} ${styles.travel}`} href="/blog">
+      <Link className={`${styles.categoryItem} ${styles.travel}`} href="/blog?cat=travel">
         Travel
       </Link>
       <Link
         className={`${styles.categoryItem} ${styles.culture}`}
-        href="/blog?cat=style"
+        href="/blog?cat=culture"
       >
         Culture
       </Link>
       <Link
         className={`${styles.categoryItem} ${styles.coding}`}
-        href="/blog?cat=style"
+        href="/blog?cat=coding"
       >
         Coding
       </Link>

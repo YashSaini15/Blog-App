@@ -28,10 +28,12 @@ const Comments = ({ postSlug }) => {
   const [desc, setDesc] = useState("");
 
   const handleSubmit = async () => {
-    await fetch("api/comments", {
+    await fetch("/api/comments", {
       method: "POST",
       body: JSON.stringify({ desc, postSlug }),
     });
+    setDesc("");
+    mutate();
   };
   return (
     <div className={styles.container}>
@@ -41,6 +43,7 @@ const Comments = ({ postSlug }) => {
           <textarea
             placeholder="write a comment..."
             className={styles.input}
+            value={desc}
             onChange={(e) => setDesc(e.target.value)}
           />
           <button className={styles.button} onClick={handleSubmit}>
@@ -54,7 +57,7 @@ const Comments = ({ postSlug }) => {
         {isLoading
           ? "loading"
           : data?.map((item) => (
-              <div key={item._id} className={styles.comment}>
+              <div key={item.id} className={styles.comment}>
                 <div className={styles.user}>
                   {item?.user?.image && (
                     <Image
@@ -67,7 +70,9 @@ const Comments = ({ postSlug }) => {
                   )}
                   <div className={styles.userInfo}>
                     <span className={styles.username}>{item.user.name}</span>
-                    <span className={styles.date}>{item.createdAt}</span>
+                    <span className={styles.date}>
+                      {item.createdAt.substring(0, 10)}
+                    </span>
                   </div>
                 </div>
                 <p className={styles.desc}>{item.desc}</p>

@@ -3,6 +3,7 @@ import styles from "./singlePage.module.css";
 import Image from "next/image";
 import Comments from "../../../components/comments/Comments";
 import Menu from "../../../components/Menu/Menu";
+import DraftJSRenderer from "../../../utils/draftjsRenderer";
 
 const getData = async (slug) => {
   const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
@@ -19,6 +20,7 @@ const getData = async (slug) => {
 const SinglePage = async ({ params }) => {
   const { slug } = params;
   const data = await getData(slug);
+
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -36,7 +38,7 @@ const SinglePage = async ({ params }) => {
               </div>
             )}
             <div className={styles.userTextContainer}>
-              <span className={styles.username}>{data?.user.name}</span>
+              <span className={styles.username}>{data?.user?.name}</span>
               <span className={styles.date}>01.01.2024</span>
             </div>
           </div>
@@ -49,12 +51,11 @@ const SinglePage = async ({ params }) => {
       </div>
       <div className={styles.content}>
         <div className={styles.post}>
-          <div
-            className={styles.description}
-            dangerouslySetInnerHTML={{ __html: data?.desc }}
-          />
+          <div className={styles.description}>
+            {data?.desc && <DraftJSRenderer content={data.desc} />}
+          </div>
           <div className={styles.comment}>
-            <Comments postSlug={slug}/>
+            <Comments postSlug={slug} />
           </div>
         </div>
         <Menu />

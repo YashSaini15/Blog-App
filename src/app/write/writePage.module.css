@@ -13,6 +13,13 @@
   position: relative;
 }
 
+.select{
+  margin-bottom: 50px;
+  padding: 10px 20px;
+  margin-left: 50px;
+  width: max-content;
+}
+
 .button,
 .addButton {
   width: 36px;

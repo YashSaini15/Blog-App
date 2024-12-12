@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../utils/connect";
-import getAuthSession from "../../../utils/auth";
+import { getAuthSession } from "../../../utils/auth";
 
 //GET ALL COMMENTS OF A POST
 export const GET = async (req) => {
@@ -19,23 +19,25 @@ export const GET = async (req) => {
   }
 };
 
-//CREATE A COMMENT
-// export const POST = async (req) => {
-//   const session = await getAuthSession();
-//   if (!session) {
-//     return new NextResponse(
-//       JSON.stringify({ message: "Not Authenticated" }, { status: 401 })
-//     );
-//   }
-//   try {
-//     const body = await request.json()
-//     const comment = await prisma.comment.create({
-//       data: {...body, userEmail: session.user.email}
-//     });
-//     return new NextResponse(JSON.stringify(comment, { status: 200 }));
-//   } catch (error) {
-//     return new NextResponse(
-//       JSON.stringify({ message: "Something went wrong" }, { status: 500 })
-//     );
-//   }
-// };
+// CREATE A COMMENT
+export const POST = async (req) => {
+  const session = await getAuthSession();
+  if (!session) {
+    return new NextResponse(
+      JSON.stringify({ message: "Not Authenticated" }, { status: 401 })
+    );
+  }
+  try {
+    const body = await req.json();
+    const comment = await prisma.comment.create({
+      data: { ...body, userEmail: session.user.email },
+    });
+    return new NextResponse(JSON.stringify(comment, { status: 200 }));
+  } catch (error) {
+    console.log(error, "error");
+
+    return new NextResponse(
+      JSON.stringify({ message: "Something went wrong" }, { status: 500 })
+    );
+  }
+};

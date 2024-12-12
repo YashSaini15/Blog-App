@@ -6,7 +6,7 @@ import styles from "./menuPosts.module.css";
 const MenuPosts = ({ withImage }) => {
   return (
     <div className={styles.items}>
-      <Link href="/" className={styles.item}>
+      <Link href="/blog?cat=travel" className={styles.item}>
         {withImage && (
           <div className={styles.imageContainer}>
             <Image src="/p1.jpeg" alt="" fill className={styles.image} />
@@ -23,7 +23,7 @@ const MenuPosts = ({ withImage }) => {
           </div>
         </div>
       </Link>
-      <Link href="/" className={styles.item}>
+      <Link href="/blog?cat=culture" className={styles.item}>
         {withImage && (
           <div className={styles.imageContainer}>
             <Image src="/p1.jpeg" alt="" fill className={styles.image} />
@@ -42,7 +42,7 @@ const MenuPosts = ({ withImage }) => {
           </div>
         </div>
       </Link>
-      <Link href="/" className={styles.item}>
+      <Link href="/blog?cat=food" className={styles.item}>
         {withImage && (
           <div className={styles.imageContainer}>
             <Image src="/p1.jpeg" alt="" fill className={styles.image} />
@@ -59,7 +59,7 @@ const MenuPosts = ({ withImage }) => {
           </div>
         </div>
       </Link>
-      <Link href="/" className={styles.item}>
+      <Link href="/blog?cat=fashion" className={styles.item}>
         {withImage && (
           <div className={styles.imageContainer}>
             <Image src="/p1.jpeg" alt="" fill className={styles.image} />

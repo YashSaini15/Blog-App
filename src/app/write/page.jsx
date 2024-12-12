@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css"; // Include the Draft.js styles
+import { convertToRaw } from "draft-js";
 import styles from "./writePage.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,23 +12,85 @@ const WritePage = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
-
+  const [catSlug, setCatSlug] = useState("");
+  const [file, setFile] = useState(null);
+  const [media, setMedia] = useState("");
   const { status } = useSession();
   const router = useRouter();
+  const rawContent = convertToRaw(editorState.getCurrentContent());
+  const desc = JSON.stringify(rawContent)
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "unauthenticated") {
       router.push("/");
     }
   }, [status, router]);
+
+  useEffect(() => {
+    const uploadToCloudinary = async () => {
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "unsigned_preset"); // Replace with your upload preset
+      formData.append("cloud_name", "dmxwwdj5y"); // Replace with your cloud name
+
+      try {
+        const res = await fetch(
+          "https://api.cloudinary.com/v1_1/dmxwwdj5y/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const data = await res.json();
+        if (data.secure_url) {
+          setMedia(data.secure_url);
+        } else {
+          console.error("Upload to Cloudinary failed:", data);
+        }
+      } catch (error) {
+        console.error("Error uploading to Cloudinary:", error);
+      }
+    };
+
+    file && uploadToCloudinary();
+  }, [file]);
 
   if (status === "loading") {
     return <div className={styles.loading}>Loading...</div>;
   }
 
-  if (status === "authenticated") {
-    return null;
-  }
+  const slugify = (str) =>
+    str
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const handleSubmit = async () => {
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        desc,
+        img: media,
+        slug: slugify(title),
+        catSlug: catSlug || "style",
+      }),
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      router.push(`/posts/${data.slug}`);
+      setTitle("");
+      setCatSlug("");
+      setEditorState(EditorState.createEmpty());
+    }
+  };
+
   // Handle editor state changes
   const handleEditorChange = (newState) => {
     setEditorState(newState);
@@ -79,10 +142,22 @@ const WritePage = () => {
     <div className={styles.container}>
       <input
         type="text"
+        value={title}
         placeholder="Title"
         className={styles.input}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <select
+        className={styles.select}
+        onChange={(e) => setCatSlug(e.target.value)}
+      >
+        <option value="style">style</option>
+        <option value="fashion">fashion</option>
+        <option value="food">food</option>
+        <option value="culture">culture</option>
+        <option value="travel">travel</option>
+        <option value="coding">coding</option>
+      </select>
       <div className={styles.editor}>
         <button className={styles.button} onClick={() => setOpen(!open)}>
           <Image src="/plus.png" alt="" width={16} height={16} />
@@ -148,7 +223,7 @@ const WritePage = () => {
           </div>
         </div>
       </div>
-      <button className={styles.publish} onClick={() => {}}>
+      <button className={styles.publish} onClick={handleSubmit}>
         Publish
       </button>
     </div>

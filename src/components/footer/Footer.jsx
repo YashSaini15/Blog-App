@@ -17,33 +17,86 @@ const Footer = () => {
           consectetur. Ut iure dolor nemo?
         </p>
         <div className={styles.icons}>
-          <Image src={"/facebook.png"} alt="" width={18} height={18} />
-          <Image src={"/instagram.png"} alt="" width={18} height={18} />
-          <Image src={"/tiktok.png"} alt="" width={18} height={18} />
-          <Image src={"/youtube.png"} alt="" width={18} height={18} />
+          <Link
+            href="https://www.facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image src="/facebook.png" alt="Facebook" width={18} height={18} />
+          </Link>
+          <Link
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              src="/instagram.png"
+              alt="Instagram"
+              width={18}
+              height={18}
+            />
+          </Link>
+          <Link
+            href="https://www.tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image src="/tiktok.png" alt="Tiktok" width={18} height={18} />
+          </Link>
+          <Link
+            href="https://www.youtube.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image src="/youtube.png" alt="Youtube" width={18} height={18} />
+          </Link>
         </div>
       </div>
       <div className={styles.links}>
         <div className={styles.list}>
           <span className={styles.listTitle}>Links</span>
           <Link href="/">Homepage</Link>
-          <Link href="/">Blog</Link>
-          <Link href="/">About</Link>
-          <Link href="/">Contact</Link>
+          <Link href="/blog">Blog</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
         </div>
         <div className={styles.list}>
           <span className={styles.listTitle}>Tags</span>
-          <Link href="/">Style</Link>
-          <Link href="/">Fashion</Link>
-          <Link href="/">Coding</Link>
-          <Link href="/">Travel</Link>
+          <Link href="/blog?cat=style">Style</Link>
+          <Link href="/blog?cat=fashion">Fashion</Link>
+          <Link href="/blog?cat=coding">Coding</Link>
+          <Link href="/blog?cat=travel">Travel</Link>
         </div>
         <div className={styles.list}>
           <span className={styles.listTitle}>Social</span>
-          <Link href="/">Facebook</Link>
-          <Link href="/">Instagram</Link>
-          <Link href="/">Tiktok</Link>
-          <Link href="/">Youtube</Link>
+          <Link
+            href="https://www.facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Facebook
+          </Link>
+          <Link
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram
+          </Link>
+          <Link
+            href="https://www.tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Tiktok
+          </Link>
+          <Link
+            href="https://www.youtube.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Youtube
+          </Link>
         </div>
       </div>
     </div>
