@@ -1,0 +1,101 @@
+.editorContainer {
+  min-height: 100px;
+  padding-top: 10px;
+  overflow-y: auto;
+  font-size: 20px;
+  color: #b3b3b1;
+  width: 100%;
+}
+
+.editor {
+  gap: 20px;
+  height: 700px;
+  position: relative;
+}
+
+.button,
+.addButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 58%;
+  background-color: transparent;
+  border: 1px solid var(--textColor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.addButton {
+  border-color: #1a8917;
+}
+
+.add {
+  display: flex;
+  gap: 20px;
+  background-color: var(--bg);
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  left: 50px;
+  top: 1px;
+}
+
+.input {
+  padding: 50px 50px 50px 0px; 
+  font-size: 50px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #b3b3b1;
+}
+
+.input::placeholder {
+  color: #b3b3b1;
+}
+
+.publish {
+  position: absolute;
+  top: 170px;
+  right: 20px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #1a8917;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.editorStyles {
+  width: 100%;
+  margin-top: 45px;
+}
+
+.buttonContainer{
+  margin-bottom: 10px;
+}
+
+.formatButton {
+  margin-right: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.format-button:hover {
+  background-color: #e0e0e0;
+}
+
+.format-button:active {
+  background-color: #d0d0d0;
+}
+
+.format-button:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+  color: #ccc;
+}
