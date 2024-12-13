@@ -29,7 +29,7 @@ const CardList = async ({ page, cat }) => {
     <div className={styles.container}>
       <h1 className={styles.title}>Recent Posts</h1>
       <div className={styles.posts}>
-        {posts?.map((item) => (
+        {Array.isArray(posts)?.map((item) => (
           <Card item={item} cardKey={item.id} key={item.id} />
         ))}
       </div>
