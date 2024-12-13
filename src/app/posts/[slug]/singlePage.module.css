@@ -54,11 +54,13 @@
 .content {
   display: flex;
   gap: 50px;
+  max-width: 100%;
 }
 
 .post {
   flex: 5;
   margin-top: 60px;
+  max-width: 65%;
 }
 
 .description p {

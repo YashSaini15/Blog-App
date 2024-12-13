@@ -2,13 +2,13 @@ import React from "react";
 import styles from "./card.module.css";
 import Image from "next/image";
 import Link from "next/link";
-
+import TruncatedDraftJSRenderer from "../../utils/truncatedDraftjsRenderer";
 const Card = ({ item, keyValue }) => {
   return (
     <div className={styles.container} key={keyValue}>
       {item.img && (
         <div className={styles.imageContainer}>
-          <Image src={item.img} alt="" fill className={styles.image} />
+          <Image src={item.img} alt="image" fill className={styles.image} />
         </div>
       )}
       <div className={styles.textContainer}>
@@ -21,7 +21,9 @@ const Card = ({ item, keyValue }) => {
         <Link href={`/posts/${item.slug}`}>
           <h1>{item.title}</h1>
         </Link>
-        <p className={styles.desc}>{item.desc.substring(0, 60)}</p>
+        <div className={styles.desc}>
+          {item?.desc && <TruncatedDraftJSRenderer content={item.desc} />}
+        </div>
         <Link href={`/posts/${item.slug}`} className={styles.link}>
           Read more
         </Link>

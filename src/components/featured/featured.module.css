@@ -46,7 +46,17 @@
   border: none;
   border-radius: 5px;
   width: max-content;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
 }
+
+.button:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
 
 @media screen and (max-width: 1200px) {
   .title {

@@ -5,15 +5,16 @@ import CardList from "../components/CardList/CardList";
 import Menu from "../components/Menu/Menu";
 
 export default async function Home({ searchParams }) {
-  const page = parseInt(searchParams.page) || 1;
-  const cat = await searchParams?.cat;
-  
+  const { page } = await searchParams;
+  const { cat } = await searchParams;
+
+  const parsePage = parseInt(page) || 1;
   return (
     <div className={styles.container}>
       <Featured />
       <CategoryList />
       <div className={styles.content}>
-        <CardList page={page} cat={cat} />
+        <CardList page={parsePage} cat={cat} />
         <Menu />
       </div>
     </div>

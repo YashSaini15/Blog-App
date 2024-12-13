@@ -33,7 +33,7 @@ const CardList = async ({ page, cat }) => {
           <Card item={item} keyValue={item.id} />
         ))}
       </div>
-      <Pagination hasPrev={hasPrev} hasNext={hasNext} page={page} />
+      <Pagination hasPrev={hasPrev} hasNext={hasNext} page={page} cat={cat}/>
     </div>
   );
 };

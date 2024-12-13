@@ -4,13 +4,14 @@ import CardList from "../../components/CardList/CardList";
 import Menu from "../../components/Menu/Menu";
 
 const BlogPage = async ({ searchParams }) => {
-  const page =  parseInt(searchParams.page) || 1;
+  const { page } = await searchParams
   const { cat } = await searchParams;
+  const parsePage = parseInt(page) || 1;
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{cat} Blog</h1>
       <div className={styles.content}>
-        <CardList page={page} cat={cat} />
+        <CardList page={parsePage} cat={cat} />
         <Menu />
       </div>
     </div>

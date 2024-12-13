@@ -1,38 +1,114 @@
+/* Navbar.module.css */
+.root {
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+  --color-accent: #4a90e2;
+  --transition-speed: 0.3s;
+  --spacing-sm: 10px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  --font-size-base: 16px;
+  --font-size-logo: clamp(24px, 4vw, 36px);
+  --font-size-links: clamp(16px, 3vw, 20px);
+}
+
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100px;
+  padding: 0 var(--spacing-lg);
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .social {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-sm);
   flex: 1;
+  align-items: center;
+}
+
+.social img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.social img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* Optional: Add slight color tint on hover for each platform */
+.social img:hover[alt="facebook"] {
+  filter: drop-shadow(0 0 5px #1877f2);
+}
+
+.social img:hover[alt="instagram"] {
+  filter: drop-shadow(0 0 5px #e1306c);
+}
+
+.social img:hover[alt="tiktok"] {
+  filter: drop-shadow(0 0 5px #000000);
+}
+
+.social img:hover[alt="youtube"] {
+  filter: drop-shadow(0 0 5px #ff0000);
 }
 
 .logo {
   flex: 1;
   text-align: center;
-  font-size: 36px;
+  font-size: var(--font-size-logo);
   font-weight: bold;
+  color: var(--softTextColor);
+  transition: color var(--transition-speed);
+}
+
+.logo:hover {
+  color: var(--color-accent);
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-md);
   flex: 1;
-  font-weight: 20px;
+  font-size: var(--font-size-links);
 }
 
+.link {
+  position: relative;
+  text-decoration: none;
+  color: var(--softTextColor);
+  transition: color var(--transition-speed), transform var(--transition-speed);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--transition-speed);
+}
+
+.link:hover {
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Responsive Breakpoints */
 @media screen and (max-width: 1280px) {
-  .logo {
-    font-size: 32px;
-  }
   .links {
-    font-size: 18px;
-    gap: 15px;
+    gap: var(--spacing-sm);
   }
 }
 
@@ -40,14 +116,20 @@
   .social {
     display: none;
   }
+
   .logo {
     text-align: left;
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
   }
 }
 
 @media screen and (max-width: 768px) {
-  .logo {
-    font-size: 24px;
+  .container {
+    height: 80px;
+    padding: 0 var(--spacing-sm);
   }
 }
 
@@ -55,7 +137,16 @@
   .links {
     justify-content: flex-end;
   }
+
   .link {
     display: none;
   }
+
+  .mobileMenuToggle {
+    display: block;
+    cursor: pointer;
+    z-index: 10;
+  }
 }
+
+
