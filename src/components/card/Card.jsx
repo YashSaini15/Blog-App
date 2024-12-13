@@ -3,9 +3,9 @@ import styles from "./card.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import TruncatedDraftJSRenderer from "../../utils/truncatedDraftjsRenderer";
-const Card = ({ item, keyValue }) => {
+const Card = ({ item, cardKey }) => {
   return (
-    <div className={styles.container} key={keyValue}>
+    <div className={styles.container} key={cardKey}>
       {item.img && (
         <div className={styles.imageContainer}>
           <Image src={item.img} alt="image" fill className={styles.image} />
