@@ -1,15 +1,3 @@
-/* authLinks.module.css */
-.root {
-  --color-text-primary: #333;
-  --color-text-secondary: #666;
-  --color-bg-primary: #fff;
-  --color-accent: #4a90e2;
-  --transition-speed: 0.3s;
-  --spacing-sm: 10px;
-  --spacing-md: 20px;
-  --spacing-lg: 30px;
-}
-
 .authContainer {
   display: flex;
   align-items: center;
@@ -147,16 +135,6 @@
   .authLinks,
   .link {
     display: none;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .root {
-    --color-text-primary: #f4f4f4;
-    --color-text-secondary: #b0b0b0;
-    --color-bg-primary: #121212;
-    --color-accent: #4a90e2;
   }
 }
 

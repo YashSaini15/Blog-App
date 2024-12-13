@@ -10,23 +10,57 @@
   padding: 10px 25px;
   border-radius: 10px;
   font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.categoryItem:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .categoryItem.style {
   background-color: #57c4ff31;
 }
+
+.categoryItem.style:hover {
+  background-color: #57c4ff; /* Brighter color for hover */
+}
+
 .categoryItem.fashion {
   background-color: #da85c731;
 }
+
+.categoryItem.fashion:hover {
+  background-color: #da85c7; /* Brighter color for hover */
+}
+
 .categoryItem.food {
   background-color: #7fb88133;
 }
+
+.categoryItem.food:hover {
+  background-color: #7fb881; /* Brighter color for hover */
+}
+
 .categoryItem.travel {
   background-color: #ff795736;
 }
+
+.categoryItem.travel:hover {
+  background-color: #ff7957; /* Brighter color for hover */
+}
+
 .categoryItem.culture {
   background-color: #ffb04f45;
 }
+
+.categoryItem.culture:hover {
+  background-color: #ffb04f; /* Brighter color for hover */
+}
+
 .categoryItem.coding {
   background-color: #5e4fff31;
+}
+
+.categoryItem.coding:hover {
+  background-color: #5e4fff; /* Brighter color for hover */
 }

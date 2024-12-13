@@ -24,6 +24,10 @@
   font-size: 24px;
 }
 
+.logoText:hover {
+  color: var(--color-accent);
+}
+
 .desc {
   font-weight: 300;
 }
@@ -32,6 +36,33 @@
   margin-top: 10px;
   display: flex;
   gap: 10px;
+}
+
+.icons img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.icons img:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+/* Optional: Add slight color tint on hover for each platform */
+.icons img:hover[alt="facebook"] {
+  filter: drop-shadow(0 0 5px #1877f2);
+}
+
+.icons img:hover[alt="instagram"] {
+  filter: drop-shadow(0 0 5px #e1306c);
+}
+
+.icons img:hover[alt="tiktok"] {
+  filter: drop-shadow(0 0 5px #000000);
+}
+
+.icons img:hover[alt="youtube"] {
+  filter: drop-shadow(0 0 5px #ff0000);
 }
 
 .links {
@@ -50,6 +81,23 @@
 
 .listTitle {
   font-weight: bold;
+}
+
+/* General link styling */
+.list a {
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for links */
+.list a:hover {
+  color: #007bff; /* Highlighted color on hover */
+  transform: scale(1.05); /* Slight enlargement on hover */
+}
+
+/* Optional: Add hover effect for list titles */
+.listTitle:hover {
+  color: #ff5722; /* Highlighted color for title on hover */
 }
 
 @media screen and (max-width: 1024px) {

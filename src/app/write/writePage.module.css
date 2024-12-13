@@ -1,87 +1,144 @@
+/* General Editor Container */
 .editorContainer {
   min-height: 100px;
+  margin-top: 20px;
   padding-top: 10px;
+  padding-left: 10px;
   overflow-y: auto;
   font-size: 20px;
-  color: #b3b3b1;
+  color: var(--softTextColor);
   width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: var(--bg);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Editor Section */
 .editor {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   height: 700px;
   position: relative;
+  padding: 20px;
 }
 
-.select{
+/* Select Dropdown */
+.select {
   margin-bottom: 50px;
   padding: 10px 20px;
   margin-left: 50px;
   width: max-content;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+.select:hover {
+  background-color: #f0f0f0;
+  border-color: #999;
+}
+
+/* Button Styles */
 .button,
 .addButton {
   width: 36px;
   height: 36px;
-  border-radius: 58%;
+  border-radius: 50%;
   background-color: transparent;
   border: 1px solid var(--textColor);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover,
+.addButton:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
 }
 
 .addButton {
-  border-color: #1a8917;
+  border-color: var(--softTextColor);
 }
 
+.addButton:hover {
+  background-color: #eaffea;
+}
+
+/* Add Section */
 .add {
   display: flex;
   gap: 20px;
   background-color: var(--bg);
   position: absolute;
-  z-index: 999;
   width: 100%;
-  left: 50px;
-  top: 1px;
+  left: 72px;
+  top: 20px;
 }
 
+/* Input Field */
 .input {
-  padding: 50px 50px 50px 0px; 
-  font-size: 50px;
-  border: none;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
   outline: none;
   background-color: transparent;
-  color: #b3b3b1;
+  color: var(--softTextColor);
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+  margin-left: 20px;
+}
+
+.input:focus {
+  border-color: #1a8917;
 }
 
 .input::placeholder {
   color: #b3b3b1;
 }
 
+/* Publish Button */
 .publish {
   position: absolute;
   top: 170px;
-  right: 20px;
+  right: 100px;
   padding: 10px 20px;
   border: none;
   background-color: #1a8917;
   color: white;
   cursor: pointer;
   border-radius: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.publish:hover {
+  background-color: #145e12;
+  transform: translateY(-2px);
+}
+
+.publish:active {
+  background-color: #0f4510;
+}
+
+/* Editor Styles Wrapper */
 .editorStyles {
   width: 100%;
   margin-top: 45px;
+  padding: 10px;
+  background-color: var(--bg);
 }
 
-.buttonContainer{
+/* Button Container */
+.buttonContainer {
   margin-bottom: 10px;
 }
 
+/* Format Buttons */
 .formatButton {
   margin-right: 10px;
   padding: 10px 15px;
@@ -90,18 +147,20 @@
   border: 1px solid #ccc;
   cursor: pointer;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.format-button:hover {
+.formatButton:hover {
   background-color: #e0e0e0;
+  transform: translateY(-2px);
 }
 
-.format-button:active {
+.formatButton:active {
   background-color: #d0d0d0;
+  transform: translateY(2px);
 }
 
-.format-button:disabled {
+.formatButton:disabled {
   background-color: #f9f9f9;
   cursor: not-allowed;
   color: #ccc;
