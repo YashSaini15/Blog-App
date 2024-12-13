@@ -21,11 +21,12 @@ const CategoryList = async () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Popular Categories</h1>
       <div className={styles.categories}>
-        {data && data?.map((item) => (
+        {data &&
+          data?.map((item, index) => (
             <Link
               href={`/blog?cat=${item.slug}`}
               className={`${styles.category} ${styles[item.slug]}`}
-              key={item.id}
+              key={item.id || index}
             >
               {item.img && (
                 <Image

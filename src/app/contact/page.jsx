@@ -29,7 +29,7 @@ const ContactPage = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Get in Touch</h1>
       <p className={styles.description}>
-        Have questions, feedback, or just want to say hello? We'd love to hear
+        Have questions, feedback, or just want to say hello? We&#39;d love to hear
         from you!
       </p>
       <form className={styles.form}>
