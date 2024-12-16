@@ -10,6 +10,9 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackUrl: process.env.NODE_ENV === 'production' 
+      ? 'https://blog-app-iota-woad-74.vercel.app/api/auth/callback/google'
+      : 'http://localhost:3000/api/auth/callback/google',
     }),
 
     GithubProvider({
