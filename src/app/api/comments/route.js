@@ -11,10 +11,10 @@ export const GET = async (req) => {
       where: { ...(postSlug && { postSlug }) },
       include: { user: true },
     });
-    return new NextResponse(JSON.stringify(comments, { status: 200 }));
+    return new NextResponse(JSON.stringify(comments), { status: 200 });
   } catch (error) {
     return new NextResponse(
-      JSON.stringify({ message: "Something went wrong" }, { status: 500 })
+      JSON.stringify({ message: "Something went wrong" }), { status: 500 }
     );
   }
 };
