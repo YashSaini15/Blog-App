@@ -11,6 +11,9 @@ const fetcher = async (url) => {
 
   const data = await res.json();
 
+  console.log(data,"data get");
+  
+
   if (!res.ok) {
     const error = new Error(data.message);
     throw error;
@@ -28,7 +31,7 @@ const Comments = ({ postSlug }) => {
   const [desc, setDesc] = useState("");
 
   const handleSubmit = async () => {
-    await fetch("/api/comments", {
+    await fetch(`${process.env.NEXTAUTH_URL}/api/comments`, {
       method: "POST",
       body: JSON.stringify({ desc, postSlug }),
     });
