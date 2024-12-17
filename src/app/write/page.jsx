@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
-
+import CircularLoader from "../../components/loader/CircularLoader";
 const WritePage = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [open, setOpen] = useState(false);
@@ -17,6 +17,7 @@ const WritePage = () => {
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const { status } = useSession();
   const router = useRouter();
   const rawContent = convertToRaw(editorState.getCurrentContent());
@@ -25,12 +26,27 @@ const WritePage = () => {
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
+    } else if (status === "loading") {
+      setLoading(true);
+    } else {
+      setLoading(false);
     }
   }, [status, router]);
 
   useEffect(() => {
     const uploadToCloudinary = async () => {
-      if (!file) return;
+      if (!file) {
+        toast.error("No file selected!");
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Invalid file type. Only JPEG, JPG, and PNG are allowed.");
+        document.getElementById("file-input").value = "";
+        return;
+      }
 
       const formData = new FormData();
       formData.append("file", file);
@@ -38,6 +54,7 @@ const WritePage = () => {
       formData.append("cloud_name", "dmxwwdj5y"); // Replace with your cloud name
 
       try {
+        setLoading(true);
         const res = await fetch(
           "https://api.cloudinary.com/v1_1/dmxwwdj5y/image/upload",
           {
@@ -51,21 +68,16 @@ const WritePage = () => {
           setMedia(data.secure_url);
           toast.success("Image uploaded successfully");
         } else {
-          console.error("Upload to Cloudinary failed:", data);
           toast.error("Failed to upload image... Please try again!");
         }
       } catch (error) {
-        console.error("Error uploading to Cloudinary:", error);
         toast.error("Server Error... Please try again later!");
       }
+      setLoading(false);
     };
 
     file && uploadToCloudinary();
   }, [file]);
-
-  if (status === "loading") {
-    return <div className={styles.loading}>Loading...</div>;
-  }
 
   const slugify = (str) =>
     str
@@ -114,6 +126,7 @@ const WritePage = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!formValidation()) {
       toast.error("Please fix the validation errors.");
       return;
@@ -137,6 +150,7 @@ const WritePage = () => {
       setEditorState(EditorState.createEmpty());
       toast.success("Post created successfully!");
     }
+    setLoading(false);
   };
 
   // Handle editor state changes
@@ -233,12 +247,12 @@ const WritePage = () => {
           <div className={styles.add}>
             <input
               type="file"
-              id="image"
+              id="file-input"
               onChange={(e) => setFile(e.target.files[0])}
               style={{ display: "none" }}
             />
             <button className={styles.addButton}>
-              <label htmlFor="image">
+              <label htmlFor="file-input">
                 <Image src="/image.png" alt="" width={16} height={16} />
               </label>
             </button>
@@ -294,6 +308,7 @@ const WritePage = () => {
       <button className={styles.publish} onClick={handleSubmit}>
         Publish
       </button>
+      <CircularLoader loading={loading} size="60px" color="#007BFF" />
     </div>
   );
 };

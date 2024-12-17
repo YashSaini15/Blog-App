@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import CircularLoader from "../loader/CircularLoader";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -28,8 +29,10 @@ const Comments = ({ postSlug }) => {
   );
 
   const [desc, setDesc] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
@@ -47,6 +50,7 @@ const Comments = ({ postSlug }) => {
     } catch (error) {
       toast.error("Failed to post comment. Please try again.");
     }
+    setLoading(false);
   };
   return (
     <div className={styles.container}>
@@ -93,6 +97,7 @@ const Comments = ({ postSlug }) => {
               </div>
             ))}
       </div>
+      <CircularLoader loading={loading} size="60px" color="#007BFF" />
     </div>
   );
 };
