@@ -5,13 +5,12 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const fetcher = async (url) => {
   const res = await fetch(url);
 
   const data = await res.json();
-
-  console.log(data,"data get");
   
 
   if (!res.ok) {
@@ -22,7 +21,7 @@ const fetcher = async (url) => {
 };
 
 const Comments = ({ postSlug }) => {
-   const { status } = useSession();
+  const { status } = useSession();
   const { data, mutate, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/comments?postSlug=${postSlug}`,
     fetcher
@@ -31,13 +30,23 @@ const Comments = ({ postSlug }) => {
   const [desc, setDesc] = useState("");
 
   const handleSubmit = async () => {
-    await fetch("/api/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ desc, postSlug }),
-    });
-    setDesc("");
-    mutate();
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ desc, postSlug }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to post comment");
+      }
+
+      setDesc("");
+      mutate();
+      toast.success("Comment posted successfully!");
+    } catch (error) {
+      toast.error("Failed to post comment. Please try again.");
+    }
   };
   return (
     <div className={styles.container}>
@@ -60,7 +69,8 @@ const Comments = ({ postSlug }) => {
       <div className={styles.comments}>
         {isLoading
           ? "loading"
-          : Array.isArray(data) && data?.map((item) => (
+          : Array.isArray(data) &&
+            data?.map((item) => (
               <div key={item.id} className={styles.comment}>
                 <div className={styles.user}>
                   {item?.user?.image && (

@@ -3,14 +3,18 @@ import { signIn, useSession } from "next-auth/react";
 import styles from "./loginPage.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { status } = useSession();
   const router = useRouter();
-  
+
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/");
+      toast.success("Logged in successfully!");
+    } else if (status === "unauthenticated") {
+      toast.error("Unable to login... Please try again!");
     }
   }, [status, router]);
 

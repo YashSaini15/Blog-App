@@ -1,36 +1,90 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./contactPage.module.css";
+import { toast } from "react-toastify";
 
 const ContactPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (value, field) => {
+    switch (field) {
+      case "name":
+        setName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "message":
+        setMessage(value);
+        break;
+      default:
+        return;
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = "*Name is required";
+    } else if (name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters.";
+    }
+    if (!email.trim()) {
+      newErrors.email = "*Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    if (!message.trim()) {
+      newErrors.message = "*Message is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-        resolved: false, 
-      }),
-    });
+    if (!validateForm()) {
+      toast.error("Please fix the validation errors.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          resolved: false,
+        }),
+      });
 
-    if (res.status === 200) {
-      setName("");
-      setEmail("");
-      setMessage("");
+      if (res.status === 200) {
+        setName("");
+        setEmail("");
+        setMessage("");
+        setErrors({});
+        toast.success("Message sent successfully!");
+      } else {
+        toast.error("Failed to send message. Please try again!");
+      }
+    } catch {
+      toast.error("An unexpected error occurred. Please try again later.");
     }
   };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Get in Touch</h1>
       <p className={styles.description}>
-        Have questions, feedback, or just want to say hello? We&#39;d love to hear
-        from you!
+        Have questions, feedback, or just want to say hello? We&#39;d love to
+        hear from you!
       </p>
       <form className={styles.form}>
         <div className={styles.formGroup}>
@@ -43,10 +97,10 @@ const ContactPage = () => {
             name="name"
             className={styles.input}
             placeholder="Your full name"
-            required
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, "name")}
           />
+          {errors.name && <p className={styles.error}>{errors.name}</p>}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="email" className={styles.label}>
@@ -58,10 +112,10 @@ const ContactPage = () => {
             name="email"
             className={styles.input}
             placeholder="Your email address"
-            required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, "email")}
           />
+          {errors.email && <p className={styles.error}>{errors.email}</p>}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="message" className={styles.label}>
@@ -74,11 +128,15 @@ const ContactPage = () => {
             placeholder="Your message"
             rows="5"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          ></textarea>
+            onChange={(e) => handleInputChange(e.target.value, "message")}
+          />
+          {errors.message && <p className={styles.error}>{errors.message}</p>}
         </div>
-        <button onClick={(e)=>handleSubmit(e)} type="submit" className={styles.button}>
+        <button
+          onClick={(e) => handleSubmit(e)}
+          type="submit"
+          className={styles.button}
+        >
           Send Message
         </button>
       </form>

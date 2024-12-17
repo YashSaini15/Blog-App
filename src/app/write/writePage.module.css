@@ -24,11 +24,14 @@
   padding: 20px;
 }
 
+.topContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+}
 /* Select Dropdown */
 .select {
-  margin-bottom: 50px;
   padding: 10px 20px;
-  margin-left: 50px;
   width: max-content;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -129,7 +132,6 @@
 .editorStyles {
   width: 100%;
   margin-top: 45px;
-  padding: 10px;
   background-color: var(--bg);
 }
 
@@ -164,4 +166,21 @@
   background-color: #f9f9f9;
   cursor: not-allowed;
   color: #ccc;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+  .topContainer {
+    flex-direction: column;
+  }
+
+  .selectContainer {
+    margin-top:10px;
+    margin-left: 20px;
+  }
 }

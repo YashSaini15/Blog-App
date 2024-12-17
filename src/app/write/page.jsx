@@ -7,6 +7,7 @@ import styles from "./writePage.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const WritePage = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -15,6 +16,7 @@ const WritePage = () => {
   const [catSlug, setCatSlug] = useState("");
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
+  const [errors, setErrors] = useState({});
   const { status } = useSession();
   const router = useRouter();
   const rawContent = convertToRaw(editorState.getCurrentContent());
@@ -47,11 +49,14 @@ const WritePage = () => {
         const data = await res.json();
         if (data.secure_url) {
           setMedia(data.secure_url);
+          toast.success("Image uploaded successfully");
         } else {
           console.error("Upload to Cloudinary failed:", data);
+          toast.error("Failed to upload image... Please try again!");
         }
       } catch (error) {
         console.error("Error uploading to Cloudinary:", error);
+        toast.error("Server Error... Please try again later!");
       }
     };
 
@@ -70,7 +75,49 @@ const WritePage = () => {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
+  const handleInputChange = (value, field) => {
+    if (field === "title") {
+      setTitle(value);
+    } else if (field === "catSlug") {
+      setCatSlug(value);
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  };
+
+  const formValidation = () => {
+    const newErrors = {};
+
+    if (!title.trim()) {
+      newErrors.title = "*Title is required";
+    } else if (title.length < 3) {
+      newErrors.title = "Title must be at least 3 characters.";
+    }
+
+    if (!catSlug) {
+      newErrors.catSlug = "*Category is required";
+    } else if (catSlug.length < 3) {
+      newErrors.catSlug = "Category slug must be at least 3 characters.";
+    }
+
+    const hasMeaningfulText = rawContent.blocks.some(
+      (block) => block.text.trim().length > 0
+    );
+
+    if (!hasMeaningfulText) {
+      newErrors.desc =
+        "*Please enter a description (at least 10 characters long)";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async () => {
+    if (!formValidation()) {
+      toast.error("Please fix the validation errors.");
+      return;
+    }
     const res = await fetch("/api/posts", {
       method: "POST",
       body: JSON.stringify({
@@ -88,12 +135,16 @@ const WritePage = () => {
       setTitle("");
       setCatSlug("");
       setEditorState(EditorState.createEmpty());
+      toast.success("Post created successfully!");
     }
   };
 
   // Handle editor state changes
   const handleEditorChange = (newState) => {
     setEditorState(newState);
+    if (errors.desc) {
+      setErrors((prevErrors) => ({ ...prevErrors, desc: "" }));
+    }
   };
 
   // Handle text formatting (bold, italic, etc.)
@@ -140,28 +191,40 @@ const WritePage = () => {
 
   return (
     <div className={styles.container}>
-      <input
-        type="text"
-        value={title}
-        placeholder="Title"
-        className={styles.input}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <select
-        className={styles.select}
-        onChange={(e) => setCatSlug(e.target.value)}
-        defaultValue=""
-      >
-        <option value="" disabled hidden>
-          Select Category
-        </option>
-        <option value="style">Style</option>
-        <option value="fashion">Fashion</option>
-        <option value="food">Food</option>
-        <option value="culture">Culture</option>
-        <option value="travel">Travel</option>
-        <option value="coding">Coding</option>
-      </select>
+      <div className={styles.topContainer}>
+        <div>
+          <input
+            type="text"
+            value={title}
+            placeholder="Title"
+            className={styles.input}
+            onChange={(e) => handleInputChange(e.target.value, "title")}
+          />
+          {errors.title && (
+            <p style={{ marginLeft: "16px" }} className={styles.error}>
+              {errors.title}
+            </p>
+          )}
+        </div>
+        <div className={styles.selectContainer}>
+          <select
+            className={styles.select}
+            onChange={(e) => handleInputChange(e.target.value, "catSlug")}
+            defaultValue=""
+          >
+            <option value="" disabled hidden>
+              Select Category
+            </option>
+            <option value="style">Style</option>
+            <option value="fashion">Fashion</option>
+            <option value="food">Food</option>
+            <option value="culture">Culture</option>
+            <option value="travel">Travel</option>
+            <option value="coding">Coding</option>
+          </select>
+          {errors.catSlug && <p className={styles.error}>{errors.catSlug}</p>}
+        </div>
+      </div>
       <div className={styles.editor}>
         <button className={styles.button} onClick={() => setOpen(!open)}>
           <Image src="/plus.png" alt="" width={16} height={16} />
@@ -225,6 +288,7 @@ const WritePage = () => {
               placeholder="Tell your story..."
             />
           </div>
+          {errors.desc && <p className={styles.error}>{errors.desc}</p>}
         </div>
       </div>
       <button className={styles.publish} onClick={handleSubmit}>
