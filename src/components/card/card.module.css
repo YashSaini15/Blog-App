@@ -36,6 +36,10 @@
   font-size: 18px;
   font-weight: 300;
   color: var(--softTextColor);
+  overflow-wrap: break-word; /* Ensures long words break properly */
+  word-wrap: break-word;     /* For legacy browser support */
+  word-break: break-word;    /* Ensures long words break properly */
+  hyphens: auto;             /* Adds hyphenation where appropriate */
 }
 
 .link {
