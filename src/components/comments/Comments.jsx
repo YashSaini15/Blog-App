@@ -12,7 +12,6 @@ const fetcher = async (url) => {
   const res = await fetch(url);
 
   const data = await res.json();
-  
 
   if (!res.ok) {
     const error = new Error(data.message);
@@ -30,9 +29,26 @@ const Comments = ({ postSlug }) => {
 
   const [desc, setDesc] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const commentValidation = () => {
+    const newErrors = {};
+
+    if (!desc.trim()) {
+      newErrors.desc = "Please write a comment";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
+    if (!commentValidation()) {
+      toast.error("Please write a comment before submitting");
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
@@ -56,16 +72,21 @@ const Comments = ({ postSlug }) => {
     <div className={styles.container}>
       <h1 className={styles.title}>Comments</h1>
       {status === "authenticated" ? (
-        <div className={styles.write}>
-          <textarea
-            placeholder="write a comment..."
-            className={styles.input}
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-          />
-          <button className={styles.button} onClick={handleSubmit}>
-            Send
-          </button>
+        <div>
+          <div className={styles.write}>
+            <textarea
+              placeholder="write a comment..."
+              className={styles.input}
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            />
+            <button className={styles.button} onClick={handleSubmit}>
+              Send
+            </button>
+          </div>
+          <div>
+            {errors.desc && <p className={styles.error}>{errors.desc}</p>}
+          </div>
         </div>
       ) : (
         <Link href="/login">Login to write a comment</Link>

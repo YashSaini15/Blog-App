@@ -129,6 +129,7 @@ const WritePage = () => {
     setLoading(true);
     if (!formValidation()) {
       toast.error("Please fix the validation errors.");
+      setLoading(false);
       return;
     }
     const res = await fetch("/api/posts", {
